@@ -1,0 +1,63 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+
+<html>
+ <head>
+     <script 
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+      </script>
+     <script type="text/javascript">
+        $(document).ready(function(){
+         $('#signup').click(function(){
+           //  alert ('heelloo jee');
+           $.ajax({
+               type:'POST',
+                url: '/tracking/user_login',
+                
+                data: '',
+                success: function(data)
+                {
+                    alert('success!!');
+                }
+           });    
+
+         });
+});
+         
+     </script>
+     <style  type='text/css' >
+        #bd_signup{
+            background-color: #999;
+            margin-top: 50px;
+            width:  100%;
+            height: 900%;
+               
+        }
+        #bd_login
+        {
+          margin-top: 20px;
+        }
+        body
+        {
+        background-image: url('../images/images6.jpg');    
+        }
+     </style>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body >
+        <form action="tracking/index" method="POST">
+            
+            <div id = bd_login  align="center" style="width:200px; margin:0 auto; height: 200px; border: 1px solid; ">
+                <p> <br><input type='Submit'  id='login' name ='signUp/login' value="Login"  style=" width: 70px">
+                </p>
+                <p><br><input type='Submit'  id ="signup" name ='signUp/login' value="SignUp">
+                </p>
+       
+        </div>
+        </form>
+    </body>
+</html>

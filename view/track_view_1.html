@@ -1,0 +1,217 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+       <head>
+<script 
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+</script>
+    <script type="text/javascript">
+
+   var sec = 0;
+    var msec =0;
+   var min= 0;
+    var hr=0;
+
+    function start(){
+         var s_time = document.getElementById('starttime');
+               s_time.value = hr + ":" + min + ":" + sec;
+               
+                go = setTimeout('start()', 1000);
+                 sec++;
+                if (sec == 60)
+                        {
+                      sec = 0;
+                      min+=1;
+                      }
+                                        if (min == 60)
+                                        {
+                                        min = 0;
+                                        hr+=1;
+                                        }
+}
+    function stop()
+{
+    clearTimeout(go);
+  var stoptime = document.getElementById('stoptime');
+               var  a =new Date();
+                 var b =new Date();
+               a.getHours();
+               a.getMinutes();
+               a.getSeconds();
+               stoptime.value = (a.getHours() +"/"+ a.getMinutes() + "/" +  a.getSeconds())
+                var startime = document.getElementById('starttime');
+               // alert( startime);
+                  var start_time = startime.value;
+                  alert(start_time);
+                           start_time =start_time.split(":");
+                  b.setSeconds(a.getSeconds() - start_time[2]);
+                  b.setMinutes(a.getMinutes() -start_time[1]);
+                   b.setHours(a.getHours() - start_time[0]);
+                var c =  (b.getHours() +"/"+ b.getMinutes() + "/" +  b.getSeconds());
+                 document.getElementById('difftime').value = c; 
+        alert(c);
+}         
+function reset()
+{
+window.location.reload();
+}
+function startwatch(){
+     var hdntime = document.getElementById('hdntime');
+         hdntime.value  = min + ":"  + sec + ":" + msec;
+        go = setTimeout('startwatch()', 1000);
+         msec++;
+         if(msec == 100)
+             {
+                 msec = 0;
+                    sec++;
+                    }
+                    if (sec == 60)
+                    {
+                    sec = 0;
+                    min++;
+                    }
+}
+ 
+$(document).ready(function($){
+
+    $("#ddldata").change(function(){
+     var selected = ($(':selected', this))
+     var optgrp =(selected.closest('optgroup').attr('label'));
+      $("#work").val(selected.text());
+      $("#wpace").val(optgrp);
+      alert(selected.closest('optgroup').attr('label'));
+      // $("#ddldata").children().remove("optgroup[label]");
+       // $('#ddldata').append('<optgroup label="New group"></optgroup>');
+  
+  //var a= ($('option:selected','#<%=ddldata.ClientID%>').text());
+  // var a= ($('option:selected', $(this)));
+      // var a= ($('option:selected', $(this)).text());
+   // alert($('optgroup:selected',a).attr('label'));
+     // var key= object.keys($(this));  
+     //  var b = $(this).data().parent();
+     //alert($(this).parent().text());
+    // $("#work").val(a);
+    // alert('a');
+   // var b= $('option optgroup', '#ddldata').text();
+ //var  b = $(('optgroup:selected',$('option:selected', $(this))).text());
+      //  var bi= $(this).parent().prev().find('option:selected').val();
+     //alert(a);
+      });
+});
+$( ".target" ).change(function() {
+  alert( "Handler for .change() called." );
+});
+
+
+</script>
+
+        <style type='text/css'>
+           #name
+            {
+        float: right;
+         width:30px;
+         height: 50px;            
+            }
+            #des{
+              float: start;
+              clear:left;
+              background-color: blue;
+            }
+            #des_in{
+                background-color: white;
+            }
+          
+            #menu{
+               height: 50px;
+               width: 100%;
+               background-color: #000;
+            }  
+            #menu ul{
+                float: right;
+            }
+          #menu  ul li{
+            list-style-type: none;
+            display: inline;
+            padding:  0 10px;
+            }
+            #menu ul li a:hover{
+               color:#0134c5;
+            }  
+           #menu ul li a{
+                height:35px;
+                color: red;
+                width: auto;
+                text-decoration: none;}
+            #container{
+            
+                border:4px solid;
+             border-color: #e13300;
+             height: 500px;
+             width:1000px;
+            }
+        </style>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div id="menu">
+            <ul>
+                <li><a href ="">Home</a></li>
+                <li><a href = "<?php  echo site_url('report/show');?>">Report</a></li>
+                <li><a href="">Setting</a></li>
+                <li><a href="<?php  echo site_url('logout/user_logout');?>">Logout</a></li>
+            </ul>
+        </div>
+        <div id ='name' >Track record write content
+                <h4> Welcome <?php echo $this->session->userdata('name') ;?></h4>
+        </div>
+      <div id="container">
+          <fieldset id="des">
+              <label >What have you done? </label>
+              <fieldset id ="des_in">
+             <?php echo form_open('track/task_add') ;?>
+                      <input type ="text" name ="task" value=''> 
+                  <input   id ='starttime' type= 'text'  name='start_time'>
+                  <input id='stoptime' type='text' name ='stop_time'>
+                  <input type='hidden'  id='difftime' name='difftime' value =''>
+                    <input type='text'  id='wpace' name='worksp' value ='worksp'>
+                  <input type='button'  name='strt' value='start' onclick='start();'>
+                <input type='button'  name='stp' value='stop' onclick='stop();'>
+              <input type='button'  name='rset' value='reset' onclick='reset();'>
+             <input type='submit'  name='Save' value='Save'>
+                <input type ="text" name ="workspace" value='project'  id='work' > 
+                   
+                <?php if(isset($w_p) )
+               {echo form_dropdown('project', $w_p, set_value('project',$w_p), 'id="ddldata"');}?>
+                 <?php if(isset($bool_tbl)){ 
+                 echo "<table   margin= 10px width ='600px' height ='700px' border='1' bgcolor='#EFFBF2' style='border-collapse:collapse; border-bottom:1px dotted black; padding:5px;'>";
+                 echo "<tr>";
+                 echo "<td>Name</td>";
+                 echo "<td>Time Start</td>";
+                 echo "<td>Time End</td>";
+                 echo "<td>Time Diff</td>";
+                 echo "</tr>";
+                 foreach($result->result_array() as $row){
+                 echo "<tr>";
+                 echo "<td>".$row['t_name']."</td>";
+                 echo "<td>".$row['t_start_time']."</td>";
+                 echo "<td>".$row['t_end_time']."</td>";
+                 echo "<td>".$row['t_diff_time']."</td>";
+                 echo "</tr>";
+                 }
+                 echo "</table>";}?>
+                
+
+               
+               
+ </fieldset>
+          </fieldset>
+          
+   
+        </div>
+        
+    </body>
+</html>
